@@ -2757,9 +2757,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 30, y: -74}
-  m_SizeDelta: {x: 300, y: 80}
-  m_Pivot: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 230, y: -100}
+  m_SizeDelta: {x: 350, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1187331416
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3560,9 +3560,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -65, y: -74}
+  m_AnchoredPosition: {x: -350, y: -100}
   m_SizeDelta: {x: 350, y: 80}
-  m_Pivot: {x: 1, y: 1}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1709544760
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4138,11 +4138,11 @@ PrefabInstance:
       objectReference: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 3958860398346517249, guid: 22d5d5262e548401eb57f4facffc0d88, type: 3}
       propertyPath: m_Pivot.x
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3958860398346517249, guid: 22d5d5262e548401eb57f4facffc0d88, type: 3}
       propertyPath: m_Pivot.y
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3958860398346517249, guid: 22d5d5262e548401eb57f4facffc0d88, type: 3}
       propertyPath: m_AnchorMax.x
@@ -4198,11 +4198,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3958860398346517249, guid: 22d5d5262e548401eb57f4facffc0d88, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -345
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3958860398346517249, guid: 22d5d5262e548401eb57f4facffc0d88, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 240
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3958860398346517249, guid: 22d5d5262e548401eb57f4facffc0d88, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -4239,11 +4239,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3768343410664285582, guid: b27dcff08103e42a4ab7a7821f4b4dfa, type: 3}
       propertyPath: m_Pivot.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 3768343410664285582, guid: b27dcff08103e42a4ab7a7821f4b4dfa, type: 3}
       propertyPath: m_Pivot.y
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 3768343410664285582, guid: b27dcff08103e42a4ab7a7821f4b4dfa, type: 3}
       propertyPath: m_AnchorMax.x
@@ -4303,7 +4303,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3768343410664285582, guid: b27dcff08103e42a4ab7a7821f4b4dfa, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 190
+      value: 195
       objectReference: {fileID: 0}
     - target: {fileID: 3768343410664285582, guid: b27dcff08103e42a4ab7a7821f4b4dfa, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -4400,11 +4400,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 367838061225526000, guid: 3d2e358f4fb2942fb92121904599212c, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -195
+      value: -170
       objectReference: {fileID: 0}
     - target: {fileID: 367838061225526000, guid: 3d2e358f4fb2942fb92121904599212c, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 195
+      value: 170
       objectReference: {fileID: 0}
     - target: {fileID: 367838061225526000, guid: 3d2e358f4fb2942fb92121904599212c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -4426,6 +4426,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 7468773961781908638, guid: 3d2e358f4fb2942fb92121904599212c, type: 3}
+      propertyPath: m_UseSpriteMesh
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
