@@ -1,0 +1,12 @@
+AI LOG - Simple Platformer (Assignment 8-9)
+
+Tool used: ChatGPT (chat assistance)
+
+I used ChatGPT to help me learn and solve some problems while making my Unity game.
+
+- It explained Canvas Scaler, anchors and Safe Area for different phone screens.
+- It gave me example code for PauseMenu.cs and SafeArea.cs, and a QuitGame() method for the main menu.
+- It helped me connect UI buttons in Unity and fix their positions.
+- It helped me write and check the GDD, README and the text for my video.
+
+I added and connected the scripts myself in Unity. I tested the buttons and checked the UI in Device Simulator. I also made the GitHub commits and pull request myself.
