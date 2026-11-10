@@ -4,6 +4,7 @@
 flowchart LR
     PI[PlayerInput<br/>joystick, Jump, Fire] --> PC[PlayerController<br/>move, jump]
     PI --> PS[PlayerShooter]
+    CF[CameraFollow<br/>on Main Camera] -- follows --> PC
     PS -- spawns --> PB[PlayerBullet]
     PB -- TakeDamage --> EH[EnemyHealth<br/>on every enemy]
 
@@ -49,3 +50,6 @@ flowchart LR
 | BossProjectile | Flies, hurts the player, stops at Ground and Walls | Health |
 | EnemyHealth | HP of an enemy, white flash, destroy at 0 | (called by PlayerBullet) |
 | PlayerBullet | Player's bullet | BossHealth, EnemyHealth |
+| CameraFollow | Side-scrolling camera, stops at the level ends | Player Transform |
+
+Level2 from left to right: spike → coin 1 → pit → SightWall + Patroller → pit with a step (coin 2) → platforms (coin 3) → Shooter → pit → heart → Charger → pit with a platform → exit.

@@ -24,7 +24,7 @@ Rules: a new player, on the phone. I only say "play". No hints. Count tries unti
 
 Numbers you can tune in the Inspector (current values):
 
-- Patroller: viewRange 5, chaseSpeed 2.8, windUp 0.6, cooldown 1.5
+- Patroller: viewRange 5, chaseSpeed 2.8, patrolDistance 3, windUp 0.6, cooldown 1.5
 - Shooter: viewRange 7, aimTime 0.6, cooldown 1.5
-- Charger: triggerRange 3, windUp 0.7, dashSpeed 7, stunTime 1, cooldown 1
+- Charger: triggerRange 5, windUp 0.7, dashSpeed 7, maxDistanceFromStart 4, stunTime 1, cooldown 1
 - EnemyHealth: maxHp 2 on each enemy
