@@ -37,8 +37,10 @@ public class BossProjectile : MonoBehaviour
             playerHealth.TakeDamage(1);
             Destroy(gameObject);
         }
-        else if (other.CompareTag("Ground"))
+        else if (other.CompareTag("Ground") ||
+                 other.gameObject.layer == LayerMask.NameToLayer("Walls"))
         {
+            // Ground or a wall (Walls layer) stops the bullet
             Destroy(gameObject);
         }
     }
