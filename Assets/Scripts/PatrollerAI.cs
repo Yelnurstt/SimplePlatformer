@@ -15,6 +15,7 @@ public class PatrollerAI : MonoBehaviour
     [SerializeField] private float chaseSpeed = 2.8f;
     [SerializeField] private float patrolDistance = 1.2f;
     [SerializeField] private float maxChaseDistance = 4f;
+    [SerializeField] private float wallCheckDistance = 0.4f; // m from the center: stop before a wall
 
     [Header("Vision")]
     [SerializeField] private float viewRange = 5f;
@@ -26,6 +27,7 @@ public class PatrollerAI : MonoBehaviour
     [SerializeField] private float windUp = 0.6f;
     [SerializeField] private float cooldown = 1.5f;
     [SerializeField] private int damage = 1;
+    [SerializeField] private AudioClip windUpSound; // optional: plays when the attack starts
 
     [Header("Debug")]
     [SerializeField] private State currentState = State.Patrol;
@@ -59,6 +61,11 @@ public class PatrollerAI : MonoBehaviour
             playerHealth = player.GetComponent<Health>();
 
         gameCamera = Camera.main;
+
+        // Safety: if Walls Mask was left as "Nothing" in the Inspector,
+        // the wall would be invisible for the rays. Use the Walls layer.
+        if (wallsMask.value == 0)
+            wallsMask = LayerMask.GetMask("Walls");
     }
 
     void Update()
@@ -154,8 +161,31 @@ public class PatrollerAI : MonoBehaviour
         if (currentState == State.Patrol ||
             currentState == State.Chase)
         {
+            // Kinematic body ignores walls, so we check the wall ourselves
+            int moveDir = nextX > rb.position.x ? 1 : -1;
+
+            if (nextX != rb.position.x && IsWallAhead(moveDir))
+            {
+                // Patrol: turn around. Chase: just stand at the wall.
+                if (currentState == State.Patrol)
+                    direction = -moveDir;
+                return;
+            }
+
             rb.MovePosition(new Vector2(nextX, rb.position.y));
         }
+    }
+
+    bool IsWallAhead(int moveDir)
+    {
+        RaycastHit2D hit = Physics2D.Raycast(
+            rb.position,
+            Vector2.right * moveDir,
+            wallCheckDistance,
+            wallsMask
+        );
+
+        return hit.collider != null;
     }
 
     bool CanSeePlayer()
@@ -216,6 +246,9 @@ public class PatrollerAI : MonoBehaviour
         // Red color warns the player before an attack
         if (sr != null)
             sr.color = next == State.Attack ? Color.red : normalColor;
+
+        if (next == State.Attack && windUpSound != null)
+            AudioSource.PlayClipAtPoint(windUpSound, transform.position, 0.8f);
 
         Debug.Log("Patroller state: " + next);
     }

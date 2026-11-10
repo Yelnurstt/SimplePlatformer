@@ -14,6 +14,7 @@ public class ShooterAI : MonoBehaviour
     [SerializeField] private float aimTime = 0.6f;
     [SerializeField] private float cooldown = 1.5f;
     [SerializeField] private float spawnOffset = 0.8f;
+    [SerializeField] private AudioClip windUpSound; // optional: plays when aiming starts
 
     [Header("Debug")]
     [SerializeField] private State currentState = State.Idle;
@@ -108,6 +109,9 @@ public class ShooterAI : MonoBehaviour
         if (sr != null)
             sr.color = next == State.Aim
                 ? Color.red : normalColor;
+
+        if (next == State.Aim && windUpSound != null)
+            AudioSource.PlayClipAtPoint(windUpSound, transform.position, 0.8f);
 
         Debug.Log("Shooter state: " + next);
     }
