@@ -39,10 +39,17 @@ public class PlayerBullet : MonoBehaviour
         }
 
         BossHealth boss = other.GetComponent<BossHealth>();
+        EnemyHealth enemy = other.GetComponent<EnemyHealth>();
 
         if (boss != null)
         {
             boss.TakeDamage(1);
+            Destroy(gameObject);
+        }
+        else if (enemy != null)
+        {
+            // Patroller, Shooter or Charger
+            enemy.TakeDamage(1);
             Destroy(gameObject);
         }
         else if (!other.isTrigger)

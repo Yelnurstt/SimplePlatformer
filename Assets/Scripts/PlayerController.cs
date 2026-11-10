@@ -9,8 +9,11 @@ public class PlayerController : MonoBehaviour
     public float jumpForce = 8f;
     public TMP_Text coinsText;
     public AudioClip jumpSound;
+    public float coyoteTime = 0.1f; // s: you can still jump a moment after leaving the edge
 
     private Rigidbody2D rb;
+    private ContactFilter2D groundFilter;
+    private float lastGroundedTime = -1f;
     private Animator anim;
     private SpriteRenderer sr;
     private Vector2 moveInput;
@@ -22,6 +25,14 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
+
+        // "Ground" = any solid collider under the feet:
+        // the contact must push the player UP (normal angle 45..135 degrees).
+        // Side contacts with a wall do not count, triggers do not count.
+        groundFilter.useTriggers = false;
+        groundFilter.useNormalAngle = true;
+        groundFilter.minNormalAngle = 45f;
+        groundFilter.maxNormalAngle = 135f;
     }
 
     void Start()
@@ -36,10 +47,13 @@ public class PlayerController : MonoBehaviour
 
     public void OnJump(InputValue value)
     {
-        if (value.isPressed && grounded)
+        bool canJump = Time.time - lastGroundedTime <= coyoteTime;
+
+        if (value.isPressed && canJump)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
             grounded = false;
+            lastGroundedTime = -1f; // no double jump
 
             if (jumpSound != null)
             {
@@ -51,6 +65,16 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         rb.linearVelocity = new Vector2(moveInput.x * speed, rb.linearVelocity.y);
+
+        // Check the ground every physics step instead of Enter/Exit events.
+        // Old way broke on the seam between two ground pieces:
+        // Exit from piece A came after Enter on piece B -> "not grounded".
+        grounded = rb.IsTouching(groundFilter);
+
+        // Right after a jump the feet still touch the ground for one step;
+        // the speed check stops that from counting as "on the ground".
+        if (grounded && rb.linearVelocity.y < jumpForce * 0.5f)
+            lastGroundedTime = Time.time;
     }
 
     void Update()
@@ -74,22 +98,9 @@ public class PlayerController : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            grounded = true;
-        }
-
         if (collision.gameObject.CompareTag("Hazard"))
         {
             GetComponent<Health>().TakeDamage(1);
-        }
-    }
-
-    void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            grounded = false;
         }
     }
 
