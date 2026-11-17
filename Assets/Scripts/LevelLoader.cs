@@ -17,6 +17,7 @@ public class LevelLoader : MonoBehaviour
 
     private float timeLeft;
     private bool finished;
+    private string bestText = "";
 
     void Awake()
     {
@@ -30,6 +31,11 @@ public class LevelLoader : MonoBehaviour
         }
 
         timeLeft = level.timeLimit;
+
+        // Best time from save.json, e.g. "  Best: 34s"
+        float best = SaveManager.Instance.GetBestTime(level.levelNumber);
+        if (best > 0f)
+            bestText = "  Best: " + Mathf.CeilToInt(best) + "s";
     }
 
     void Update()
@@ -39,7 +45,7 @@ public class LevelLoader : MonoBehaviour
         timeLeft -= Time.deltaTime;
 
         if (timerText != null)
-            timerText.text = "Time: " + Mathf.CeilToInt(Mathf.Max(0f, timeLeft));
+            timerText.text = "Time: " + Mathf.CeilToInt(Mathf.Max(0f, timeLeft)) + bestText;
 
         if (timeLeft <= 0f)
         {
@@ -56,6 +62,11 @@ public class LevelLoader : MonoBehaviour
         finished = true;
 
         Debug.Log(level.levelName + " complete!");
+
+        // Save right after the level: opens the next level, keeps best time
+        float timeUsed = level.timeLimit - timeLeft;
+        SaveManager.Instance.LevelCompleted(level.levelNumber, timeUsed);
+
         SceneManager.LoadScene(level.nextScene);
     }
 }
