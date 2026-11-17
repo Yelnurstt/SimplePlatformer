@@ -5,9 +5,16 @@ using UnityEngine.UI;
 
 public class BossHealth : MonoBehaviour
 {
-    public int hp = 3;
+    public BossStats stats;   // maxHp: Boss_Stats asset
     public TMP_Text bossHpText;
     public Slider bossHpBar;
+
+    private int hp;   // current HP lives here, not in the asset
+
+    void Awake()
+    {
+        hp = stats.maxHp;
+    }
 
     void Start()
     {
@@ -33,7 +40,7 @@ public class BossHealth : MonoBehaviour
     {
         if (bossHpText != null)
         {
-            bossHpText.text = "BOSS HP: " + hp + "/3";
+            bossHpText.text = "BOSS HP: " + hp + "/" + stats.maxHp;
         }
 
         if (bossHpBar != null)

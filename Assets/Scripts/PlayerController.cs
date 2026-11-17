@@ -5,11 +5,13 @@ using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
-    public float speed = 5f;
-    public float jumpForce = 8f;
+    [Header("Data")]
+    public PlayerStats stats;   // speed, jump, coyote time: Player_Stats asset
+    public ItemStats items;     // spike damage: Item_Stats asset
+
+    [Header("UI and sound")]
     public TMP_Text coinsText;
     public AudioClip jumpSound;
-    public float coyoteTime = 0.1f; // s: you can still jump a moment after leaving the edge
 
     private Rigidbody2D rb;
     private ContactFilter2D groundFilter;
@@ -47,11 +49,11 @@ public class PlayerController : MonoBehaviour
 
     public void OnJump(InputValue value)
     {
-        bool canJump = Time.time - lastGroundedTime <= coyoteTime;
+        bool canJump = Time.time - lastGroundedTime <= stats.coyoteTime;
 
         if (value.isPressed && canJump)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, stats.jumpForce);
             grounded = false;
             lastGroundedTime = -1f; // no double jump
 
@@ -64,7 +66,7 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        rb.linearVelocity = new Vector2(moveInput.x * speed, rb.linearVelocity.y);
+        rb.linearVelocity = new Vector2(moveInput.x * stats.moveSpeed, rb.linearVelocity.y);
 
         // Check the ground every physics step instead of Enter/Exit events.
         // Old way broke on the seam between two ground pieces:
@@ -73,7 +75,7 @@ public class PlayerController : MonoBehaviour
 
         // Right after a jump the feet still touch the ground for one step;
         // the speed check stops that from counting as "on the ground".
-        if (grounded && rb.linearVelocity.y < jumpForce * 0.5f)
+        if (grounded && rb.linearVelocity.y < stats.jumpForce * 0.5f)
             lastGroundedTime = Time.time;
     }
 
@@ -100,7 +102,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Hazard"))
         {
-            GetComponent<Health>().TakeDamage(1);
+            GetComponent<Health>().TakeDamage(items.spikeDamage);
         }
     }
 

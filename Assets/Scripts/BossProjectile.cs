@@ -1,26 +1,32 @@
 
 using UnityEngine;
 
+// Enemy bullet (Shooter and Boss). Speed and damage are set by the shooter
+// from its stats asset when the bullet is created.
 public class BossProjectile : MonoBehaviour
 {
-    public float speed = 5f;
+    [SerializeField] private float lifetime = 5f;  // s: removed after this (technical)
 
     private Rigidbody2D rb;
     private Vector2 direction = Vector2.left;
+    private float speed;
+    private int damage;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
     }
 
-    public void SetDirection(Vector2 newDirection)
+    public void Setup(Vector2 newDirection, float newSpeed, int newDamage)
     {
         direction = newDirection.normalized;
+        speed = newSpeed;
+        damage = newDamage;
     }
 
     void Start()
     {
-        Destroy(gameObject, 5f);
+        Destroy(gameObject, lifetime);
     }
 
     void FixedUpdate()
@@ -34,7 +40,7 @@ public class BossProjectile : MonoBehaviour
 
         if (playerHealth != null)
         {
-            playerHealth.TakeDamage(1);
+            playerHealth.TakeDamage(damage);
             Destroy(gameObject);
         }
         else if (other.CompareTag("Ground") ||

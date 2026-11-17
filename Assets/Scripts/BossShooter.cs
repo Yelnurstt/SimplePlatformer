@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class BossShooter : MonoBehaviour
 {
+    public BossStats stats;   // fire interval, bullet speed and damage: Boss_Stats asset
     public BossProjectile projectilePrefab;
     public Transform player;
-
-    public float fireInterval = 2f;
+    public float spawnOffset = 1.2f;   // m: bullet appears in front of the boss (technical)
 
     private float timer = 0f;
 
@@ -19,7 +19,7 @@ public class BossShooter : MonoBehaviour
 
         timer += Time.deltaTime;
 
-        if (timer >= fireInterval)
+        if (timer >= stats.fireInterval)
         {
             timer = 0f;
             Fire();
@@ -32,7 +32,7 @@ public class BossShooter : MonoBehaviour
             (player.position - transform.position).normalized;
 
         Vector3 spawnPosition = transform.position
-            + (Vector3)(direction * 1.2f);
+            + (Vector3)(direction * spawnOffset);
 
         BossProjectile bullet = Instantiate(
             projectilePrefab,
@@ -40,6 +40,6 @@ public class BossShooter : MonoBehaviour
             Quaternion.identity
         );
 
-        bullet.SetDirection(direction);
+        bullet.Setup(direction, stats.bulletSpeed, stats.bulletDamage);
     }
 }

@@ -1717,6 +1717,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9a9e8b71455f4dd3a90e945d9a8ae4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  stats: {fileID: 11400000, guid: 1e1036e9c7034927b9a182e990a4e783, type: 2}
+  items: {fileID: 11400000, guid: 01ca0315e36a48cf9927f38a98761184, type: 2}
   speed: 5
   jumpForce: 8
   coinsText: {fileID: 1187331416}
@@ -1763,6 +1765,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d4c7bb15fff343a7ba6eb6fc7889613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
+  stats: {fileID: 11400000, guid: 1e1036e9c7034927b9a182e990a4e783, type: 2}
   hp: 3
   hpText: {fileID: 1709544760}
   hurtSound: {fileID: 8300000, guid: df138119dfa134580b2064eba3ca6295, type: 3}
@@ -2072,6 +2075,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba76132fbefbd459e893dc0cf8e2ae28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HeartPickup
+  items: {fileID: 11400000, guid: 01ca0315e36a48cf9927f38a98761184, type: 2}
 --- !u!1 &897399014
 GameObject:
   m_ObjectHideFlags: 0

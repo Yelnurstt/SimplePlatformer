@@ -693,6 +693,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4cb9a6c63acf4ea1bd6824890505f34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PatrollerAI
+  stats: {fileID: 11400000, guid: 4760c160036d4351b23b97d1d4f09535, type: 2}
   player: {fileID: 637843838}
   wallsMask:
     serializedVersion: 2
@@ -1519,6 +1520,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7e6e92a415d14df4a96c1ba9e471d4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NewMonoBehaviourScript
+  stats: {fileID: 11400000, guid: 78ca173bfeee463cb2d762f75dfd2042, type: 2}
   player: {fileID: 637843838}
   projectilePrefab: {fileID: 214799537716193671, guid: 60c98dab0a9194f2490eee66211ceef9, type: 3}
   viewRange: 7
@@ -1937,6 +1939,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9a9e8b71455f4dd3a90e945d9a8ae4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  stats: {fileID: 11400000, guid: 1e1036e9c7034927b9a182e990a4e783, type: 2}
+  items: {fileID: 11400000, guid: 01ca0315e36a48cf9927f38a98761184, type: 2}
   speed: 5
   jumpForce: 8
   coinsText: {fileID: 1187331416}
@@ -1983,6 +1987,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d4c7bb15fff343a7ba6eb6fc7889613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
+  stats: {fileID: 11400000, guid: 1e1036e9c7034927b9a182e990a4e783, type: 2}
   hp: 3
   hpText: {fileID: 1709544760}
   hurtSound: {fileID: 8300000, guid: df138119dfa134580b2064eba3ca6295, type: 3}
@@ -2242,6 +2247,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba76132fbefbd459e893dc0cf8e2ae28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HeartPickup
+  items: {fileID: 11400000, guid: 01ca0315e36a48cf9927f38a98761184, type: 2}
 --- !u!1 &814948971
 GameObject:
   m_ObjectHideFlags: 0
@@ -5173,6 +5179,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 641976d1aa574feaadcf5dfff5d935ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
+  stats: {fileID: 11400000, guid: 4760c160036d4351b23b97d1d4f09535, type: 2}
   maxHp: 2
   flashTime: 0.1
   hitSound: {fileID: 8300000, guid: df138119dfa134580b2064eba3ca6295, type: 3}
@@ -5188,6 +5195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 641976d1aa574feaadcf5dfff5d935ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
+  stats: {fileID: 11400000, guid: 78ca173bfeee463cb2d762f75dfd2042, type: 2}
   maxHp: 2
   flashTime: 0.1
   hitSound: {fileID: 8300000, guid: df138119dfa134580b2064eba3ca6295, type: 3}
@@ -5203,6 +5211,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a83721471d19411d95ba285df989a19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerShooter
+  stats: {fileID: 11400000, guid: 1e1036e9c7034927b9a182e990a4e783, type: 2}
   bulletPrefab: {fileID: 9157954763281784840, guid: 41382469d78294022b3dc42466b6c37e, type: 3}
   cooldown: 0.4
   shootSound: {fileID: 8300000, guid: d6ce17642dd4649d99e0d1a5e323669d, type: 3}
@@ -5387,6 +5396,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d43e10c59ff740138e82a74a073e912, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ChargerAI
+  stats: {fileID: 11400000, guid: 9312418da85c4a6ba7473bde298dc69f, type: 2}
   player: {fileID: 637843838}
   wallsMask:
     serializedVersion: 2
@@ -5421,6 +5431,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 641976d1aa574feaadcf5dfff5d935ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
+  stats: {fileID: 11400000, guid: 9312418da85c4a6ba7473bde298dc69f, type: 2}
   maxHp: 2
   flashTime: 0.1
   hitSound: {fileID: 8300000, guid: df138119dfa134580b2064eba3ca6295, type: 3}

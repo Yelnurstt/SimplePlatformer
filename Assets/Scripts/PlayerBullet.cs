@@ -3,9 +3,11 @@ using UnityEngine;
 
 public class PlayerBullet : MonoBehaviour
 {
-    public float speed = 10f;
+    [SerializeField] private float lifetime = 3f;  // s: removed after this (technical)
 
     private float direction = 1f;
+    private float speed;   // set by PlayerShooter from Player_Stats
+    private int damage;
     private Rigidbody2D rb;
 
     void Awake()
@@ -15,12 +17,14 @@ public class PlayerBullet : MonoBehaviour
 
     void Start()
     {
-        Destroy(gameObject, 3f);
+        Destroy(gameObject, lifetime);
     }
 
-    public void SetDirection(float newDirection)
+    public void Setup(float newDirection, float newSpeed, int newDamage)
     {
         direction = newDirection;
+        speed = newSpeed;
+        damage = newDamage;
     }
 
     void FixedUpdate()
@@ -43,13 +47,13 @@ public class PlayerBullet : MonoBehaviour
 
         if (boss != null)
         {
-            boss.TakeDamage(1);
+            boss.TakeDamage(damage);
             Destroy(gameObject);
         }
         else if (enemy != null)
         {
             // Patroller, Shooter or Charger
-            enemy.TakeDamage(1);
+            enemy.TakeDamage(damage);
             Destroy(gameObject);
         }
         else if (!other.isTrigger)

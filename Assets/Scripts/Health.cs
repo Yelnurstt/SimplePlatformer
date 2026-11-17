@@ -3,18 +3,26 @@ using UnityEngine.SceneManagement;
 using System.Collections;
 using TMPro;
 
+// Player HP. Max HP and invincible time come from the Player_Stats asset.
+// Current HP lives here, on the player, not in the asset.
 public class Health : MonoBehaviour
 {
-    public int hp = 3;
+    [Header("Data")]
+    public PlayerStats stats;
+
+    [Header("UI and sound")]
     public TMP_Text hpText;
     public AudioClip hurtSound;
+    public float blinkInterval = 0.2f; // s: blink speed while invincible (visual only)
 
+    private int hp;
     private bool invincible = false;
     private SpriteRenderer sr;
 
     void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
+        hp = stats.maxHp;
     }
 
     void Start()
@@ -47,7 +55,7 @@ public class Health : MonoBehaviour
 
     public void Heal(int amount)
     {
-        hp = Mathf.Min(3, hp + amount);
+        hp = Mathf.Min(stats.maxHp, hp + amount);
         UpdateHPText();
         Debug.Log("HP after healing: " + hp);
     }
@@ -55,11 +63,13 @@ public class Health : MonoBehaviour
     IEnumerator Invincibility()
     {
         invincible = true;
+        float time = 0f;
 
-        for (int i = 0; i < 10; i++)
+        while (time < stats.invincibleTime)
         {
             sr.enabled = !sr.enabled;
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(blinkInterval);
+            time += blinkInterval;
         }
 
         sr.enabled = true;
@@ -70,7 +80,7 @@ public class Health : MonoBehaviour
     {
         if (hpText != null)
         {
-            hpText.text = "HP: " + hp + "/3";
+            hpText.text = "HP: " + hp + "/" + stats.maxHp;
         }
     }
 }

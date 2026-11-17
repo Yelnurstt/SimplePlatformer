@@ -10,23 +10,11 @@ public class PatrollerAI : MonoBehaviour
     [SerializeField] private Transform player;
     [SerializeField] private LayerMask wallsMask;
 
-    [Header("Movement")]
-    [SerializeField] private float patrolSpeed = 2f;
-    [SerializeField] private float chaseSpeed = 2.8f;
-    [SerializeField] private float patrolDistance = 1.2f;
-    [SerializeField] private float maxChaseDistance = 4f;
+    [Header("Data")]
+    [SerializeField] private PatrollerStats stats;   // all balance numbers: Patroller_Stats asset
+
+    [Header("Technical")]
     [SerializeField] private float wallCheckDistance = 0.4f; // m from the center: stop before a wall
-
-    [Header("Vision")]
-    [SerializeField] private float viewRange = 5f;
-    [SerializeField] private float viewAngle = 140f;
-    [SerializeField] private float loseSightTime = 1.5f;
-
-    [Header("Attack")]
-    [SerializeField] private float attackRange = 1.2f;
-    [SerializeField] private float windUp = 0.6f;
-    [SerializeField] private float cooldown = 1.5f;
-    [SerializeField] private int damage = 1;
     [SerializeField] private AudioClip windUpSound; // optional: plays when the attack starts
 
     [Header("Debug")]
@@ -47,6 +35,14 @@ public class PatrollerAI : MonoBehaviour
 
     void Awake()
     {
+        // No data asset = the enemy cannot work. Say it clearly and switch off.
+        if (stats == null)
+        {
+            Debug.LogError(name + ": Stats asset is missing", this);
+            enabled = false;
+            return;
+        }
+
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponentInChildren<SpriteRenderer>();
 
@@ -55,7 +51,7 @@ public class PatrollerAI : MonoBehaviour
 
         startX = transform.position.x;
         leftX = startX;
-        rightX = startX + patrolDistance;
+        rightX = startX + stats.patrolDistance;
 
         if (player != null)
             playerHealth = player.GetComponent<Health>();
@@ -88,12 +84,12 @@ public class PatrollerAI : MonoBehaviour
                 else
                     lostTimer += Time.deltaTime;
 
-                if (lostTimer >= loseSightTime)
+                if (lostTimer >= stats.loseSightTime)
                 {
                     SetState(State.Patrol);
                 }
                 else if (seesPlayer &&
-                         DistanceToPlayer() <= attackRange &&
+                         DistanceToPlayer() <= stats.attackRange &&
                          IsOnScreen())
                 {
                     SetState(State.Attack);
@@ -101,14 +97,14 @@ public class PatrollerAI : MonoBehaviour
                 break;
 
             case State.Attack:
-                if (stateTimer >= windUp)
+                if (stateTimer >= stats.windUp)
                 {
-                    if (DistanceToPlayer() <= attackRange &&
+                    if (DistanceToPlayer() <= stats.attackRange &&
                         CanSeePlayer() &&
                         IsOnScreen())
                     {
                         if (playerHealth != null)
-                            playerHealth.TakeDamage(damage);
+                            playerHealth.TakeDamage(stats.damage);
                     }
 
                     SetState(State.Cooldown);
@@ -116,7 +112,7 @@ public class PatrollerAI : MonoBehaviour
                 break;
 
             case State.Cooldown:
-                if (stateTimer >= cooldown)
+                if (stateTimer >= stats.cooldown)
                 {
                     SetState(seesPlayer ? State.Chase : State.Patrol);
                 }
@@ -135,7 +131,7 @@ public class PatrollerAI : MonoBehaviour
             nextX = Mathf.MoveTowards(
                 rb.position.x,
                 targetX,
-                patrolSpeed * Time.fixedDeltaTime
+                stats.patrolSpeed * Time.fixedDeltaTime
             );
 
             if (Mathf.Abs(nextX - targetX) < 0.02f)
@@ -147,14 +143,14 @@ public class PatrollerAI : MonoBehaviour
 
             float targetX = Mathf.Clamp(
                 player.position.x,
-                startX - maxChaseDistance,
-                startX + maxChaseDistance
+                startX - stats.maxChaseDistance,
+                startX + stats.maxChaseDistance
             );
 
             nextX = Mathf.MoveTowards(
                 rb.position.x,
                 targetX,
-                chaseSpeed * Time.fixedDeltaTime
+                stats.chaseSpeed * Time.fixedDeltaTime
             );
         }
 
@@ -196,12 +192,12 @@ public class PatrollerAI : MonoBehaviour
         float distance = toPlayer.magnitude;
 
         // 1. Check distance
-        if (distance > viewRange) return false;
+        if (distance > stats.viewRange) return false;
 
         // 2. Check viewing angle
         Vector2 facing = Vector2.right * direction;
 
-        if (Vector2.Angle(facing, toPlayer) > viewAngle / 2f)
+        if (Vector2.Angle(facing, toPlayer) > stats.viewAngle / 2f)
             return false;
 
         // 3. Check for walls
@@ -255,7 +251,9 @@ public class PatrollerAI : MonoBehaviour
 
     void OnDrawGizmosSelected()
     {
+        if (stats == null) return;
+
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, viewRange);
+        Gizmos.DrawWireSphere(transform.position, stats.viewRange);
     }
 }
