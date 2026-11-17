@@ -2,10 +2,12 @@ using System.Collections;
 using UnityEngine;
 
 // Health for the three AI enemies. The player's bullet calls TakeDamage.
+// Max HP comes from the same stats asset as the enemy's AI.
+// Current HP lives here, on THIS enemy: never change stats.maxHp.
 public class EnemyHealth : MonoBehaviour
 {
-    [SerializeField] private int maxHp = 2;            // hits to kill
-    [SerializeField] private float flashTime = 0.1f;   // s: white flash on hit
+    [SerializeField] private EnemyStats stats;         // Patroller_Stats, Shooter_Stats or Charger_Stats
+    [SerializeField] private float flashTime = 0.1f;   // s: white flash on hit (visual only)
     [SerializeField] private AudioClip hitSound;       // optional
 
     private int hp;
@@ -13,7 +15,7 @@ public class EnemyHealth : MonoBehaviour
 
     void Awake()
     {
-        hp = maxHp;
+        hp = stats.maxHp;
         sr = GetComponentInChildren<SpriteRenderer>();
     }
 

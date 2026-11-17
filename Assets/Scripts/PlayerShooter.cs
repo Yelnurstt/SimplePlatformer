@@ -3,8 +3,9 @@ using UnityEngine.InputSystem;
 
 public class PlayerShooter : MonoBehaviour
 {
+    public PlayerStats stats;   // shoot cooldown, bullet speed and damage: Player_Stats asset
     public GameObject bulletPrefab;
-    public float cooldown = 0.4f;
+    public float spawnOffset = 0.8f;   // m: bullet appears in front of the player (technical)
     public AudioClip shootSound;
 
     private float facing = 1f;
@@ -38,10 +39,10 @@ public class PlayerShooter : MonoBehaviour
             return;
         }
 
-        nextShotTime = Time.time + cooldown;
+        nextShotTime = Time.time + stats.shootCooldown;
 
         Vector3 spawnPosition = transform.position
-            + new Vector3(facing * 0.8f, 0f, 0f);
+            + new Vector3(facing * spawnOffset, 0f, 0f);
 
         GameObject bullet = Instantiate(
             bulletPrefab,
@@ -52,7 +53,7 @@ public class PlayerShooter : MonoBehaviour
         PlayerBullet playerBullet = bullet.GetComponent<PlayerBullet>();
         if (playerBullet != null)
         {
-            playerBullet.SetDirection(facing);
+            playerBullet.Setup(facing, stats.bulletSpeed, stats.bulletDamage);
         }
 
         if (shootSound != null)

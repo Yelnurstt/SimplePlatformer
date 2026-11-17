@@ -9,11 +9,11 @@ public class ShooterAI : MonoBehaviour
     [SerializeField] private Transform player;
     [SerializeField] private BossProjectile projectilePrefab;
 
-    [Header("Settings")]
-    [SerializeField] private float viewRange = 7f;
-    [SerializeField] private float aimTime = 0.6f;
-    [SerializeField] private float cooldown = 1.5f;
-    [SerializeField] private float spawnOffset = 0.8f;
+    [Header("Data")]
+    [SerializeField] private ShooterStats stats;   // all balance numbers: Shooter_Stats asset
+
+    [Header("Technical")]
+    [SerializeField] private float spawnOffset = 0.8f;  // m: bullet appears in front of the enemy
     [SerializeField] private AudioClip windUpSound; // optional: plays when aiming starts
 
     [Header("Debug")]
@@ -26,6 +26,22 @@ public class ShooterAI : MonoBehaviour
 
     void Awake()
     {
+        // No data asset = the enemy cannot work. Say it clearly and switch off.
+        if (stats == null)
+        {
+            Debug.LogError(name + ": Stats asset is missing", this);
+            enabled = false;
+            return;
+        }
+
+        // Enemies are created from LevelData, so a prefab cannot keep a link
+        // to the player in the scene. Find the player once, here in Awake.
+        if (player == null)
+        {
+            PlayerController pc = FindAnyObjectByType<PlayerController>();
+            if (pc != null) player = pc.transform;
+        }
+
         sr = GetComponentInChildren<SpriteRenderer>();
         gameCamera = Camera.main;
 
@@ -42,7 +58,7 @@ public class ShooterAI : MonoBehaviour
 
         bool canAttack =
             Vector2.Distance(transform.position, player.position)
-                <= viewRange
+                <= stats.viewRange
             && IsOnScreen();
 
         switch (currentState)
@@ -55,7 +71,7 @@ public class ShooterAI : MonoBehaviour
             case State.Aim:
                 if (!canAttack)
                     SetState(State.Idle);
-                else if (timer >= aimTime)
+                else if (timer >= stats.windUp)
                     SetState(State.Shoot);
                 break;
 
@@ -65,7 +81,7 @@ public class ShooterAI : MonoBehaviour
                 break;
 
             case State.Cooldown:
-                if (timer >= cooldown)
+                if (timer >= stats.cooldown)
                     SetState(State.Idle);
                 break;
         }
@@ -86,7 +102,7 @@ public class ShooterAI : MonoBehaviour
             Quaternion.identity
         );
 
-        bullet.SetDirection(direction);
+        bullet.Setup(direction, stats.bulletSpeed, stats.damage);
     }
 
     bool IsOnScreen()

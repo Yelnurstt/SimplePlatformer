@@ -12,24 +12,15 @@ public class ChargerAI : MonoBehaviour
     [SerializeField] private LayerMask wallsMask;      // tick only Walls
     [SerializeField] private AudioClip windUpSound;    // optional
 
-    [Header("Detection")]
-    [SerializeField] private float triggerRange = 5f;   // m: starts the wind-up
-    [SerializeField] private float heightTolerance = 1f; // m: player must be about on the same floor
+    [Header("Data")]
+    [SerializeField] private ChargerStats stats;   // all balance numbers: Charger_Stats asset
 
-    [Header("Attack")]
-    [SerializeField] private float windUp = 0.7f;        // s: warning before the dash
-    [SerializeField] private float blinkInterval = 0.1f; // s: red/normal blink speed
-    [SerializeField] private float dashSpeed = 7f;       // m/s
-    [SerializeField] private float dashDistance = 4f;    // m: dash stops after this distance
-    [SerializeField] private float maxDistanceFromStart = 4f; // m: stays on its own area
+    [Header("Technical")]
+    [SerializeField] private float blinkInterval = 0.1f;      // s: red/normal blink speed
     [SerializeField] private float wallCheckDistance = 0.4f;  // m: stops before a wall
     [SerializeField] private LayerMask groundMask = 1;        // Default layer: the floor
     [SerializeField] private float edgeCheckAhead = 0.4f;     // m: looks for floor in front
-    [SerializeField] private int damage = 1;
-
-    [Header("Recovery")]
-    [SerializeField] private float stunTime = 1f;   // s: stands still after the dash
-    [SerializeField] private float cooldown = 1f;   // s: in Idle before the next wind-up
+    [SerializeField] private float groundCheckLength = 1f;    // m: how far down to look for floor
     [SerializeField] private Color stunColor = Color.gray;
 
     [Header("Debug")]
@@ -48,6 +39,22 @@ public class ChargerAI : MonoBehaviour
 
     void Awake()
     {
+        // No data asset = the enemy cannot work. Say it clearly and switch off.
+        if (stats == null)
+        {
+            Debug.LogError(name + ": Stats asset is missing", this);
+            enabled = false;
+            return;
+        }
+
+        // Enemies are created from LevelData, so a prefab cannot keep a link
+        // to the player in the scene. Find the player once, here in Awake.
+        if (player == null)
+        {
+            PlayerController pc = FindAnyObjectByType<PlayerController>();
+            if (pc != null) player = pc.transform;
+        }
+
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponentInChildren<SpriteRenderer>();
         gameCamera = Camera.main;
@@ -70,7 +77,7 @@ public class ChargerAI : MonoBehaviour
         switch (currentState)
         {
             case State.Idle:
-                if (timer >= cooldown && CanSeePlayer() && IsOnScreen())
+                if (timer >= stats.cooldown && CanSeePlayer() && IsOnScreen())
                     SetState(State.WindUp);
                 break;
 
@@ -82,7 +89,7 @@ public class ChargerAI : MonoBehaviour
                     sr.color = red ? Color.red : normalColor;
                 }
 
-                if (timer >= windUp)
+                if (timer >= stats.windUp)
                     SetState(State.Dash);
                 break;
 
@@ -91,7 +98,7 @@ public class ChargerAI : MonoBehaviour
                 break;
 
             case State.Stunned:
-                if (timer >= stunTime)
+                if (timer >= stats.stunTime)
                     SetState(State.Idle);
                 break;
         }
@@ -101,10 +108,10 @@ public class ChargerAI : MonoBehaviour
     {
         if (currentState != State.Dash) return;
 
-        float nextX = rb.position.x + dashDir * dashSpeed * Time.fixedDeltaTime;
+        float nextX = rb.position.x + dashDir * stats.dashSpeed * Time.fixedDeltaTime;
 
-        bool tooFar = Mathf.Abs(nextX - dashStartX) >= dashDistance;
-        bool outOfArea = Mathf.Abs(nextX - startX) > maxDistanceFromStart;
+        bool tooFar = Mathf.Abs(nextX - dashStartX) >= stats.dashDistance;
+        bool outOfArea = Mathf.Abs(nextX - startX) > stats.maxDistanceFromStart;
 
         if (tooFar || outOfArea || IsWallAhead() || !IsGroundAhead())
         {
@@ -120,10 +127,10 @@ public class ChargerAI : MonoBehaviour
         Vector2 toPlayer = player.position - transform.position;
 
         // 1. Distance
-        if (toPlayer.magnitude > triggerRange) return false;
+        if (toPlayer.magnitude > stats.triggerRange) return false;
 
         // 2. Same floor (it can only dash left or right)
-        if (Mathf.Abs(toPlayer.y) > heightTolerance) return false;
+        if (Mathf.Abs(toPlayer.y) > stats.heightTolerance) return false;
 
         // 3. Walls block the view
         RaycastHit2D hit = Physics2D.Raycast(
@@ -153,7 +160,7 @@ public class ChargerAI : MonoBehaviour
     {
         Vector2 origin = rb.position + Vector2.right * dashDir * edgeCheckAhead;
 
-        RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.down, 1f, groundMask);
+        RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.down, groundCheckLength, groundMask);
 
         return hit.collider != null;
     }
@@ -208,19 +215,21 @@ public class ChargerAI : MonoBehaviour
 
         if (health != null)
         {
-            health.TakeDamage(damage);
+            health.TakeDamage(stats.damage);
             hitThisDash = true;
         }
     }
 
     void OnDrawGizmosSelected()
     {
+        if (stats == null) return;
+
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, triggerRange);
+        Gizmos.DrawWireSphere(transform.position, stats.triggerRange);
 
         // Dash lane
         Gizmos.color = Color.red;
         Vector3 from = transform.position;
-        Gizmos.DrawLine(from + Vector3.left * dashDistance, from + Vector3.right * dashDistance);
+        Gizmos.DrawLine(from + Vector3.left * stats.dashDistance, from + Vector3.right * stats.dashDistance);
     }
 }

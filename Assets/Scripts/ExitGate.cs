@@ -1,11 +1,9 @@
 
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
+// The exit. Which scene comes next is in the LevelData asset now.
 public class ExitGate : MonoBehaviour
 {
-    public string nextScene;
-
     private void OnTriggerEnter2D(Collider2D other)
     {
         PlayerController player =
@@ -22,12 +20,6 @@ public class ExitGate : MonoBehaviour
             return;
         }
 
-        if (string.IsNullOrEmpty(nextScene))
-        {
-            Debug.Log("Level Complete!");
-            return;
-        }
-
-        SceneManager.LoadScene(nextScene);
+        LevelLoader.Instance.CompleteLevel();
     }
 }

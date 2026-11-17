@@ -53,3 +53,32 @@ flowchart LR
 | CameraFollow | Side-scrolling camera, stops at the level ends | Player Transform |
 
 Level2 from left to right: spike → coin 1 → pit → SightWall + Patroller → pit with a step (coin 2) → platforms (coin 3) → Shooter → pit → heart → Charger → pit with a platform → exit.
+
+# Script map — Assignment 11 (data and saves)
+
+```mermaid
+flowchart LR
+    subgraph Data[ScriptableObject assets - Assets/Data]
+        ST[Patroller / Shooter / Charger Stats<br/>Player / Boss / Item Stats]
+        LD[Level_01 / Level_02 / Level_03<br/>LevelData]
+    end
+    ST --> AI[Enemy AI, Player, Boss]
+    LD --> LL[LevelLoader<br/>one in every level scene]
+    LL -- spawns prefabs --> AI
+    EG[ExitGate] -- CompleteLevel --> LL
+    BH[BossHealth] -- CompleteLevel --> LL
+    LL -- LevelCompleted --> SM[SaveManager<br/>created automatically,<br/>lives in all scenes]
+    MM[MainMenuUI] -- IsUnlocked, SetVolume,<br/>ResetProgress --> SM
+    SM -- Load / Save / Delete --> SS[SaveSystem<br/>JSON, try/catch, save.tmp]
+    SS --> F[(save.json<br/>persistentDataPath)]
+```
+
+| Script | Job |
+|---|---|
+| EnemyStats + 3 children, PlayerStats, BossStats, ItemStats | All balance numbers as assets |
+| LevelData | One level as data: enemies, coins, time limit, next scene |
+| LevelLoader | Builds the level from LevelData, timer, CompleteLevel |
+| SaveData | What is in save.json: version, unlocked levels, best times, volume |
+| SaveSystem | Read/write JSON, safe loading, temp file |
+| SaveManager | Save in memory; saves after a level, on pause and on quit |
+| MainMenuUI | Level select (locked/unlocked), volume, reset with confirm |
