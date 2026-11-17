@@ -47,6 +47,14 @@ public class ChargerAI : MonoBehaviour
             return;
         }
 
+        // Enemies are created from LevelData, so a prefab cannot keep a link
+        // to the player in the scene. Find the player once, here in Awake.
+        if (player == null)
+        {
+            PlayerController pc = FindAnyObjectByType<PlayerController>();
+            if (pc != null) player = pc.transform;
+        }
+
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponentInChildren<SpriteRenderer>();
         gameCamera = Camera.main;

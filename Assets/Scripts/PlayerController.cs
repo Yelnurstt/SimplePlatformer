@@ -92,7 +92,7 @@ public class PlayerController : MonoBehaviour
             sr.flipX = moveInput.x < 0f;
         }
 
-        if (transform.position.y < -6f)
+        if (transform.position.y < LevelLoader.Instance.Level.fallDeathY)
         {
             RestartLevel();
         }
@@ -115,14 +115,14 @@ public class PlayerController : MonoBehaviour
 
     public bool HasAllCoins()
     {
-        return coinsCollected >= 3;
+        return coinsCollected >= LevelLoader.Instance.Level.coinsToOpenExit;
     }
 
     void UpdateCoinsText()
     {
         if (coinsText != null)
         {
-            coinsText.text = "Coins: " + coinsCollected + "/3";
+            coinsText.text = "Coins: " + coinsCollected + "/" + LevelLoader.Instance.Level.coinsToOpenExit;
         }
     }
 

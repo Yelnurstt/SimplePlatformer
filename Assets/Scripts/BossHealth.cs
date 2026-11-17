@@ -32,7 +32,7 @@ public class BossHealth : MonoBehaviour
         if (hp <= 0)
         {
             Debug.Log("Boss Defeated!");
-            SceneManager.LoadScene("WinScreen");
+            LevelLoader.Instance.CompleteLevel();   // next scene comes from Level_03
         }
     }
 
