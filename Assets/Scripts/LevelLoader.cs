@@ -51,6 +51,7 @@ public class LevelLoader : MonoBehaviour
         {
             finished = true;
             Debug.Log("Time is up!");
+            AudioManager.Instance.PlayLose();
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
@@ -62,6 +63,7 @@ public class LevelLoader : MonoBehaviour
         finished = true;
 
         Debug.Log(level.levelName + " complete!");
+        AudioManager.Instance.PlayWin();
 
         // Save right after the level: opens the next level, keeps best time
         float timeUsed = level.timeLimit - timeLeft;

@@ -13,7 +13,8 @@ public class LevelResult
 [System.Serializable]
 public class SaveData
 {
-    public const int CurrentVersion = 1;
+    // 2: one "volume" became musicVolume + sfxVolume (week 12)
+    public const int CurrentVersion = 2;
 
     public int version = CurrentVersion;
 
@@ -23,6 +24,7 @@ public class SaveData
     // Best score: best time per level
     public List<LevelResult> results = new List<LevelResult>();
 
-    // Settings
-    public float volume = 1f;   // 0..1
+    // Settings: slider values 0..1 (AudioManager turns them into decibels)
+    public float musicVolume = 0.8f;
+    public float sfxVolume = 0.8f;
 }

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class BossHealth : MonoBehaviour
 {
     public BossStats stats;   // maxHp: Boss_Stats asset
+    public AudioClip[] hitSounds;   // same 3 hit versions as the enemies
     public TMP_Text bossHpText;
     public Slider bossHpBar;
 
@@ -27,6 +28,7 @@ public class BossHealth : MonoBehaviour
 
         hp = Mathf.Max(0, hp - damage);
         UpdateHPText();
+        AudioManager.Instance.PlayRandom(hitSounds, 0.9f);
         Debug.Log("Boss HP: " + hp);
 
         if (hp <= 0)

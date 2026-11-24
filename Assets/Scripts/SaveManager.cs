@@ -21,7 +21,6 @@ public class SaveManager : MonoBehaviour
     {
         Instance = this;
         Data = SaveSystem.Load();
-        AudioListener.volume = Data.volume;
         Debug.Log("Save file: " + SaveSystem.FilePath);
     }
 
@@ -61,22 +60,31 @@ public class SaveManager : MonoBehaviour
         Debug.Log("Saved: level " + levelNumber + " done in " + time.ToString("0.0") + " s");
     }
 
-    // Settings changed -> apply and save right away
-    public void SetVolume(float volume)
+    // Settings changed -> apply to the mixer and save right away
+    public void SetMusicVolume(float value)
     {
-        Data.volume = Mathf.Clamp01(volume);
-        AudioListener.volume = Data.volume;
+        Data.musicVolume = Mathf.Clamp01(value);
+        AudioManager.Instance.SetMusicVolume(Data.musicVolume);
+        SaveSystem.Save(Data);
+    }
+
+    public void SetSfxVolume(float value)
+    {
+        Data.sfxVolume = Mathf.Clamp01(value);
+        AudioManager.Instance.SetSfxVolume(Data.sfxVolume);
         SaveSystem.Save(Data);
     }
 
     // Reset progress: delete the file, start from level 1 again.
-    // The volume setting is kept (it is a setting, not progress).
+    // Volume settings are kept (they are settings, not progress).
     public void ResetProgress()
     {
-        float volume = Data.volume;
+        float music = Data.musicVolume;
+        float sfx = Data.sfxVolume;
         SaveSystem.Delete();
         Data = new SaveData();
-        Data.volume = volume;
+        Data.musicVolume = music;
+        Data.sfxVolume = sfx;
         SaveSystem.Save(Data);
         Debug.Log("Progress reset");
     }

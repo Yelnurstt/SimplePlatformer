@@ -188,7 +188,7 @@ public class ChargerAI : MonoBehaviour
             dashDir = player.position.x >= transform.position.x ? 1 : -1;
 
             if (windUpSound != null)
-                AudioSource.PlayClipAtPoint(windUpSound, transform.position, 0.8f);
+                AudioManager.Instance.PlaySfx(windUpSound, 0.8f);
         }
 
         if (next == State.Dash)

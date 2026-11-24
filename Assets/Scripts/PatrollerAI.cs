@@ -252,7 +252,7 @@ public class PatrollerAI : MonoBehaviour
             sr.color = next == State.Attack ? Color.red : normalColor;
 
         if (next == State.Attack && windUpSound != null)
-            AudioSource.PlayClipAtPoint(windUpSound, transform.position, 0.8f);
+            AudioManager.Instance.PlaySfx(windUpSound, 0.8f);
 
         Debug.Log("Patroller state: " + next);
     }

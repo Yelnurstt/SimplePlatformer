@@ -1075,63 +1075,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &522766810
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 5085874412314375941, guid: 966107609a8fb4109a2b2fd610c0176a, type: 3}
-      propertyPath: m_Name
-      value: BackgroundMusic
-      objectReference: {fileID: 0}
-    - target: {fileID: 8357851126874613024, guid: 966107609a8fb4109a2b2fd610c0176a, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 240.47247
-      objectReference: {fileID: 0}
-    - target: {fileID: 8357851126874613024, guid: 966107609a8fb4109a2b2fd610c0176a, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 174.25491
-      objectReference: {fileID: 0}
-    - target: {fileID: 8357851126874613024, guid: 966107609a8fb4109a2b2fd610c0176a, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8357851126874613024, guid: 966107609a8fb4109a2b2fd610c0176a, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8357851126874613024, guid: 966107609a8fb4109a2b2fd610c0176a, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8357851126874613024, guid: 966107609a8fb4109a2b2fd610c0176a, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8357851126874613024, guid: 966107609a8fb4109a2b2fd610c0176a, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8357851126874613024, guid: 966107609a8fb4109a2b2fd610c0176a, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8357851126874613024, guid: 966107609a8fb4109a2b2fd610c0176a, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8357851126874613024, guid: 966107609a8fb4109a2b2fd610c0176a, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 966107609a8fb4109a2b2fd610c0176a, type: 3}
 --- !u!1 &637843836
 GameObject:
   m_ObjectHideFlags: 0
@@ -1560,6 +1503,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossHealth
   stats: {fileID: 11400000, guid: c443494f164243ff81e20060efb2ca71, type: 2}
+  hitSounds:
+  - {fileID: 8300000, guid: d048e558af2d4fa4b99db3d53d48cd58, type: 3}
+  - {fileID: 8300000, guid: 8f8a77fd0d114fe68f20cd94eaa566e4, type: 3}
+  - {fileID: 8300000, guid: ff812977bef644c28c754e53c5e56d88, type: 3}
   hp: 3
   bossHpText: {fileID: 76323884}
   bossHpBar: {fileID: 803941143}
@@ -3712,5 +3659,4 @@ SceneRoots:
   - {fileID: 132100026}
   - {fileID: 363582500}
   - {fileID: 647832812}
-  - {fileID: 522766810}
   - {fileID: 1920012543}

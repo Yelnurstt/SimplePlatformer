@@ -4,18 +4,17 @@ using UnityEngine.SceneManagement;
 using TMPro;
 
 // Main menu: level select (locked / unlocked from save.json),
-// volume setting and "Reset progress" with a confirm panel.
+// Music and SFX volume sliders and "Reset progress" with a confirm panel.
 public class MainMenuUI : MonoBehaviour
 {
     [Header("Level select")]
     [SerializeField] private LevelData[] levels;        // Level_01, Level_02, Level_03
     [SerializeField] private Button[] levelButtons;     // one button for each level
 
-    [Header("Volume")]
-    [SerializeField] private TMP_Text volumeText;
-    [SerializeField] private Button volumeDownButton;
-    [SerializeField] private Button volumeUpButton;
-    [SerializeField] private float volumeStep = 0.1f;
+    [Header("Volume (sliders: Min 0.0001, Max 1)")]
+    [SerializeField] private Slider musicSlider;
+    [SerializeField] private Slider sfxSlider;
+    [SerializeField] private AudioClip sfxPreview;   // plays when the SFX slider moves
 
     [Header("Reset progress")]
     [SerializeField] private Button resetButton;
@@ -33,15 +32,18 @@ public class MainMenuUI : MonoBehaviour
             levelButtons[i].onClick.AddListener(() => SceneManager.LoadScene(level.sceneName));
         }
 
-        volumeDownButton.onClick.AddListener(() => ChangeVolume(-volumeStep));
-        volumeUpButton.onClick.AddListener(() => ChangeVolume(volumeStep));
+        // Put the saved values on the sliders first, THEN listen for changes
+        SaveData data = SaveManager.Instance.Data;
+        musicSlider.SetValueWithoutNotify(data.musicVolume);
+        sfxSlider.SetValueWithoutNotify(data.sfxVolume);
+        musicSlider.onValueChanged.AddListener(SaveManager.Instance.SetMusicVolume);
+        sfxSlider.onValueChanged.AddListener(OnSfxChanged);
 
         resetButton.onClick.AddListener(() => confirmPanel.SetActive(true));
         noButton.onClick.AddListener(() => confirmPanel.SetActive(false));
         yesButton.onClick.AddListener(ResetProgress);
 
         RefreshLevels();
-        RefreshVolume();
     }
 
     // Read the save and show each level as open or locked
@@ -72,18 +74,19 @@ public class MainMenuUI : MonoBehaviour
         }
     }
 
-    void ChangeVolume(float delta)
+    void OnSfxChanged(float value)
     {
-        // Round to steps of 10%, so 0.1 + 0.2 does not become 0.30000001
-        float volume = Mathf.Round((SaveManager.Instance.Data.volume + delta) * 10f) / 10f;
-        SaveManager.Instance.SetVolume(volume);   // saves right away
-        RefreshVolume();
+        SaveManager.Instance.SetSfxVolume(value);   // mixer + save.json
+
+        // Short sound so the player hears the new SFX level (not on every tiny move)
+        if (Time.unscaledTime - lastPreviewTime > 0.25f)
+        {
+            AudioManager.Instance.PlaySfx(sfxPreview);
+            lastPreviewTime = Time.unscaledTime;
+        }
     }
 
-    void RefreshVolume()
-    {
-        volumeText.text = "Volume: " + Mathf.RoundToInt(SaveManager.Instance.Data.volume * 100f) + "%";
-    }
+    private float lastPreviewTime;
 
     void ResetProgress()
     {

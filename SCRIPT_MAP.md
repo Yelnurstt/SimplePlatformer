@@ -82,3 +82,38 @@ flowchart LR
 | SaveSystem | Read/write JSON, safe loading, temp file |
 | SaveManager | Save in memory; saves after a level, on pause and on quit |
 | MainMenuUI | Level select (locked/unlocked), volume, reset with confirm |
+
+# Script map — Assignment 12 (sound)
+
+```mermaid
+flowchart LR
+    PC[PlayerController<br/>jump, fall] --> AM
+    PS[PlayerShooter] --> AM
+    CO[Coin] --> AM
+    H[Health<br/>hurt, death] --> AM
+    EH[EnemyHealth / BossHealth<br/>3 hit versions] --> AM
+    AI[Patroller / Shooter / Charger AI<br/>wind-up at the START of the attack] --> AM
+    LL[LevelLoader<br/>win, time up] --> AM
+    PM[PauseMenu] -- SetPaused --> AM
+    MM[MainMenuUI<br/>Music + SFX sliders] -- SetMusicVolume / SetSfxVolume --> SM[SaveManager<br/>save.json]
+    SM --> AM
+
+    AM[AudioManager<br/>Resources prefab, DontDestroyOnLoad<br/>random pitch 0.92-1.08<br/>crossfade 1 s] --> SFX[SFX group<br/>4 AudioSources]
+    AM --> UI[UI group<br/>click on every Button]
+    AM --> TR[Tracks group<br/>2 music AudioSources]
+    TR --> MU[Music group<br/>MusicVol]
+    SFX --> MA[Master]
+    UI --> MA
+    MU --> MA
+    AM -- Normal / Paused snapshot<br/>Tracks: -6 dB, Lowpass 800 Hz --> TR
+```
+
+| Script | Job |
+|---|---|
+| AudioManager | Every sound in the game: SFX with random pitch, UI click, music crossfade, pause snapshot, volume in dB |
+| MainMenuUI | Music and SFX sliders, read and write the save |
+| SaveManager / SaveData | musicVolume and sfxVolume in save.json, applied at launch |
+| PauseMenu | Calls SetPaused(true/false) |
+| Gameplay scripts | Only call AudioManager.Instance.PlaySfx / PlayRandom / PlayDeath / PlayWin / PlayLose |
+
+Why the slider is on **Music** and the pause effect on its child **Tracks**: after `SetFloat("MusicVol")` the script owns that volume and a snapshot cannot move it.
