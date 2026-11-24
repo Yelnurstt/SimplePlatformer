@@ -59,7 +59,7 @@ public class PlayerController : MonoBehaviour
 
             if (jumpSound != null)
             {
-                AudioSource.PlayClipAtPoint(jumpSound, transform.position, 0.8f);
+                AudioManager.Instance.PlaySfx(jumpSound, 0.8f);
             }
         }
     }
@@ -128,6 +128,7 @@ public class PlayerController : MonoBehaviour
 
     void RestartLevel()
     {
+        AudioManager.Instance.PlayDeath();   // fell into a pit
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

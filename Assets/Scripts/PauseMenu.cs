@@ -16,12 +16,14 @@ public class PauseMenu : MonoBehaviour
     {
         pausePanel.SetActive(true);
         Time.timeScale = 0f;
+        AudioManager.Instance.SetPaused(true);    // music goes soft and muffled
     }
 
     public void Resume()
     {
         Time.timeScale = 1f;
         pausePanel.SetActive(false);
+        AudioManager.Instance.SetPaused(false);
     }
 
     public void Restart()

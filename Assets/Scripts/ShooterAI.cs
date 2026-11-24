@@ -127,7 +127,7 @@ public class ShooterAI : MonoBehaviour
                 ? Color.red : normalColor;
 
         if (next == State.Aim && windUpSound != null)
-            AudioSource.PlayClipAtPoint(windUpSound, transform.position, 0.8f);
+            AudioManager.Instance.PlaySfx(windUpSound, 0.8f);
 
         Debug.Log("Shooter state: " + next);
     }

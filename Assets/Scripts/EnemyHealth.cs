@@ -8,7 +8,7 @@ public class EnemyHealth : MonoBehaviour
 {
     [SerializeField] private EnemyStats stats;         // Patroller_Stats, Shooter_Stats or Charger_Stats
     [SerializeField] private float flashTime = 0.1f;   // s: white flash on hit (visual only)
-    [SerializeField] private AudioClip hitSound;       // optional
+    [SerializeField] private AudioClip[] hitSounds;    // 2-3 versions, one is picked at random
 
     private int hp;
     private SpriteRenderer sr;
@@ -25,8 +25,7 @@ public class EnemyHealth : MonoBehaviour
 
         hp -= damage;
 
-        if (hitSound != null)
-            AudioSource.PlayClipAtPoint(hitSound, transform.position, 0.8f);
+        AudioManager.Instance.PlayRandom(hitSounds, 0.8f);
 
         if (hp <= 0)
         {

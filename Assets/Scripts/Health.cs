@@ -40,11 +40,12 @@ public class Health : MonoBehaviour
 
         if (hurtSound != null)
         {
-            AudioSource.PlayClipAtPoint(hurtSound, transform.position, 0.8f);
+            AudioManager.Instance.PlaySfx(hurtSound, 0.8f);
         }
 
         if (hp <= 0)
         {
+            AudioManager.Instance.PlayDeath();   // death + lose sound, they survive the reload
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
         else

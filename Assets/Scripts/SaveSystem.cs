@@ -76,7 +76,10 @@ public static class SaveSystem
         if (data.results == null)
             data.results = new System.Collections.Generic.List<LevelResult>();
 
-        data.volume = Mathf.Clamp01(data.volume);
+        // Old save (version 1) has no musicVolume/sfxVolume: JsonUtility leaves
+        // the default 0.8 from SaveData, so nothing else is needed here.
+        data.musicVolume = Mathf.Clamp01(data.musicVolume);
+        data.sfxVolume = Mathf.Clamp01(data.sfxVolume);
 
         if (data.version < SaveData.CurrentVersion)
             data.version = SaveData.CurrentVersion;

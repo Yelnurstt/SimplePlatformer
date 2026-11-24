@@ -58,7 +58,7 @@ public class PlayerShooter : MonoBehaviour
 
         if (shootSound != null)
         {
-            AudioSource.PlayClipAtPoint(shootSound, transform.position, 0.6f);
+            AudioManager.Instance.PlaySfx(shootSound, 0.6f);
         }
     }
 }

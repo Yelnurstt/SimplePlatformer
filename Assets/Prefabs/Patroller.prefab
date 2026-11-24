@@ -214,4 +214,7 @@ MonoBehaviour:
   stats: {fileID: 11400000, guid: 4760c160036d4351b23b97d1d4f09535, type: 2}
   maxHp: 2
   flashTime: 0.1
-  hitSound: {fileID: 8300000, guid: df138119dfa134580b2064eba3ca6295, type: 3}
+  hitSounds:
+  - {fileID: 8300000, guid: d048e558af2d4fa4b99db3d53d48cd58, type: 3}
+  - {fileID: 8300000, guid: 8f8a77fd0d114fe68f20cd94eaa566e4, type: 3}
+  - {fileID: 8300000, guid: ff812977bef644c28c754e53c5e56d88, type: 3}
