@@ -39,3 +39,30 @@ The Game Design Document (GDD), UI screenshots and demo video are submitted in C
 ## Next steps
 
 I want to improve the enemy, add simple saving, and polish the sounds and effects. I am keeping the game small and easy to play.
+
+## Sounds and music
+
+All sounds and both music tracks are **own work**. They are generated from simple waves (square, triangle, noise) by `Tools/make_sounds.py` in this repository. No sounds from the internet. Run `python3 Tools/make_sounds.py` to make them again.
+
+| File | What | Source, license |
+|---|---|---|
+| `Jump.wav` | player jump, rising blip | own work (Tools/make_sounds.py) |
+| `Hurt.wav` | player takes damage | own work |
+| `EnemyHit1-3.wav` | enemy / boss is hit, 3 versions | own work |
+| `CoinPickup.wav` | coin pickup, two-note chime | own work |
+| `Shoot.wav` | player shot | own work |
+| `WindUp.wav` | enemy wind-up before an attack | own work |
+| `Death.wav` | player death | own work |
+| `Click.wav` | UI button click | own work |
+| `Win.wav` | level complete | own work |
+| `Lose.wav` | player died / time is up | own work |
+| `MenuMusic.wav` | menu music, calm loop, 84 BPM | own work |
+| `LevelMusic.wav` | level music, faster loop, 140 BPM | own work |
+
+## Assignment 12 — Sound Pass
+
+- `AudioManager` (Assets/Resources) plays every sound through the `GameMix` mixer: groups Master, Music (child Tracks), SFX, UI.
+- Menu and level music switch with a 1 s crossfade; Retry does not restart the music.
+- Music and SFX sliders in the main menu, in decibels (Log10 × 20), saved in `save.json`.
+- Pause: the Paused snapshot makes the music quieter and muffled (Lowpass 800 Hz).
+- Variation: random pitch 0.92–1.08 on effects, 3 versions of the hit sound.
